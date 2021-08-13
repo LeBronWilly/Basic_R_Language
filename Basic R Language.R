@@ -1,6 +1,4 @@
-#####
 # R基本數學操作
-
 sqrt(5)
 abs(-94)
 5%%2
@@ -10,17 +8,25 @@ abs(-94)
 # 安裝及匯入套件
 install.packages("installr")
 require(installr)
+install.packages("lattice")
+require(lattice)
+install.packages("pastecs") 
+library(pastecs) 
+
 
 #更新R語言(需考量版本問題)
 updateR()
 
-x=c(1,2,3,NA,5)
+x1=c(1,2,3,NA,5)
 
-data1 <- data.frame(x=c(1,2,3,NA,5),
-                    y=c(4,5,3,NA,NA))
+data1 <- data.frame(x1=c(1,2,3,NA,5),
+                    y1=c(4,5,3,NA,NA))
 
-data1[,"x"]
-data1[,"y"]
+data1[,"x1"]
+data1$x1
+data1[,"y1"]
+data1$y1
+
 data1[1,]
 data1[3,]
 
@@ -35,133 +41,25 @@ na.omit(data1)
 
 
 # 用平均數填補遺漏值
-
-data1[is.na(data1[,"y"]), "y"] <- mean(data1[,"y"], na.rm=T)
-data1[is.na(data1[,"x"]), "x"] <- mean(data1[,"x"], na.rm=T)
+data1
+data1[is.na(data1[,"y1"]), "y1"] <- mean(data1[,"y1"], na.rm=T)
+data1[is.na(data1[,"x1"]), "x1"] <- mean(data1[,"x1"], na.rm=T)
 data1
 
 
-#####
-#各式統計圖表
+# 一些統計名詞
+HW=read.csv(file.choose()) # 身高體重.csv
+h=HW$身高
+h
 
-#圓餅圖-Tires-作法1
-#Puncture刺孔
-#Valve Stem Leak氣門桿泄漏
-#Damaged Sidewall輪胎壁損害
-#Valve Core Leak氣門芯泄漏
-#Damaged Liner內襯損害
-#Leak From Seating底座泄漏
-#cex字符大小
-#col圖例中出現的點或線的顏色
-#rainbow
-#http://iccm.cc/colors-and-palettes-in-r-language/
-    #round將 x 四捨五入到第 n 位
-    #在R中，paste() 函数主要是用於字符串連接
-    #legend:Add Legends to Plots | 圖例
-    #https://walkonnet.com/archives/29986
-Counts <- c(414,397,209,184,132,132)
-CausesA <- c(" Puncture "," Valve Stem Leak "," Damaged Sidewall "," Valve Core Leak", " Damaged Liner" ," Leak From Seating ")
-color = c("skyblue","lightgreen","red","blue","lightyellow","yellow")
-
-pie(Counts, labels= CausesA, col= color)
-
-
-per.Counts <- paste(round(100 * Counts / sum(Counts),2), "%")
-slice.col <- rainbow(10)
-pie(Counts,labels = per.Counts, col= slice.col, main = "輪胎漏氣各原因相對所佔的百分比")
-legend("topright", CausesA, cex=0.55, fill=slice.col) 
-
-
-#圓餅圖-Tires-作法2
-#prop.table函數：頻率統計函數
-#（1）prop.table(data)：將data轉換爲百分比
-#（2）prop.table(data,1)：將data按行求百分比
-#（3）prop.table(data,2)：將data按列求百分比
-#其中需要注意的是data的數據類型爲矩陣（as.matrix(data)）
-
-A=read.csv(file.choose())
-percent<-round(prop.table(A$Counts)*100,2)
-label<-paste(A$CausesA,percent,"%",sep="")
-pie(A$Counts,labels =label,col= c("skyblue","lightgreen","red","blue","lightyellow"),main = "輪胎漏氣各原因相對所佔的百分比")
-
-
-#長條圖-圓餅圖輪胎漏氣練習題-作法2
-
-Tires=read.csv(file.choose())
-Tires
-percent<-round(prop.table(Tires$Counts)*100,2)
-label<-paste(Tires$CausesA, percent, "%", sep="")
-pie(Tires$Counts, labels =label,
-    col= c("skyblue","lightgreen","red","blue","lightyellow"),
-    main = "不良項目所佔的百分比")
-
-#長條圖-Exh_qc-作法2
-A=read.csv(file.choose())
-A
-barplot(A$次數,names.arg=A$Flaws,border="green",
-        main="不良",col=c("red","orange","lightblue","yellow"))
-barplot(A$次數,names.arg=A$Flaws,border="green",
-        main="不良")
-barplot(A$次數,names.arg=A$Flaws,
-        main="不良")
-
-
-#Practice1（Exh_qc）
-#Exh-qc圓餅圖
-A=read.csv(file.choose())
-A
-percent<-round(prop.table(A$次數)*100,2)
-label<-paste(A$Flaws,percent,"%",sep="")
-pie(A$次數,labels =label,col= c("skyblue","lightgreen","red","blue","lightyellow"),main = "退貨數量")
-
-
-#長條圖-圓餅圖輪胎漏氣練習題-作法2
-A=read.csv(file.choose()) # 圓餅圖長條圖練習題
-A
-barplot(A$件數,names.arg=A$不良項目,border="green",main="不良",
-        col=c("red","orange","lightblue","yellow","lightgreen"))
-
-
-#直方圖-重量範例-作法2
-A=read.csv(file.choose()) #重量
-A
-view(A)
-summary(A)
-hist(A$重量, main="直方圖示例", xlab = "重量", ylab="高度",
-     col = "green", border = "red", 
-     xlim = c(50,85), ylim = c(0,10),breaks = 8)
-shapiro.test(A$重量) # 常態檢定 # 若p值>0.05，則代表常態分配
-
-
-#直方圖-尺寸練習題-作法2
-A=read.csv(file.choose()) # 尺寸
-A
-view(A)
-summary(A)
-hist(A$尺寸, main="直方圖演練", xlab = "尺寸", ylab="次數",
-     col = "orange",border = "blue", 
-     xlim = c(120,155), ylim = c(0,30),breaks = 5)
-hist(A$尺寸, main="直方圖演練", xlab = "尺寸", ylab="次數",
-     col = "orange",border = "blue", 
-     breaks = 5)
-shapiro.test(A$尺寸) # 常態檢定 # 若p值>0.05，則代表常態分配
-
-
-
-#集中與離散趨勢-example
-A=read.csv(file.choose()) # 身高體重
-A
-summary(A) # R語言中無奇數的計算，是偶數相加/2
-h<-A$身高
-h=A$身高
 mean(h)     #平均數
 median(h)   #中位數
-sd(h)
 var(h)
+sd(h)
 max(h)
 min(h)
 range(h)
-#全距=226-110=116
+# 全距=226-110=116
 quantile(h)
 # IQR=Q3-Q1=181-163.75=17.25
 
@@ -170,13 +68,14 @@ quantile(h)
 table(h) # 出現次數
 max(table(h)) # 出現最大次數
 names(table(h)) # 出現次數的名稱
-names(table(h))[which(table(h)==max(table(h)))] # 出現最大次數的名稱(眾數)
+names(table(h))[which(table(h) == max(table(h)))] # 出現最大次數的名稱(眾數)
 as.integer(names(table(h))[which(table(h)==max(table(h)))]) # 轉成int
+
+
 
 #集中離散趨勢-身高體重練習題
 A=read.csv(file.choose())
-install.packages(c("pastecs")) 
-library(pastecs) 
+
 A
 summary(A)
 round(stat.desc(A$身高),2) #小數點2位數
@@ -186,12 +85,68 @@ round(stat.desc(A$體重),2)
 
 Mode<-function(x) # 建立重數的function
 {
-    ux<-sort(unique(x))
-    tab<-tabulate(match(x,ux))
-    ux[tab==max(tab)]
+  ux<-sort(unique(x))
+  tab<-tabulate(match(x,ux))
+  ux[tab==max(tab)]
 }
 Mode(A$身高)
 Mode(A$體重)
+
+
+
+
+
+
+#各式統計圖表
+
+#圓餅圖-Tires
+#col圖例中出現的點或線的顏色
+#round將 x 四捨五入到第 n 位
+#paste()函数主要是用於字符串連接
+#prop.table函數：頻率統計函數
+#（1）prop.table(data)：將data轉換爲百分比
+#（2）prop.table(data,1)：將data按行求百分比
+#（3）prop.table(data,2)：將data按列求百分比
+#其中需要注意的是data的數據類型爲矩陣（as.matrix(data)）
+
+Tires = read.csv(file.choose()) # 導入Tires.csv
+
+percent <- round(prop.table(Tires$Counts)*100, 2)
+percent
+
+label <- paste(Tires$CausesA," ", percent, "%", sep="")
+label
+
+pie(Tires$Counts,labels = label, col= c("skyblue","lightgreen","red","blue","lightyellow"), main = "Tires")
+
+
+
+#長條圖-Tires
+barplot(Tires$Counts, names.arg=A$CausesA, main="Tires", col=rainbow(7), cex.names=0.55)
+
+
+
+
+
+#直方圖-重量
+W=read.csv(file.choose())  # 重量.csv
+hist(W$重量, main="重量", xlab = "重量", ylab="高度")
+
+# 常態檢定
+shapiro.test(W$重量) # 若p值>0.05，則代表常態分配
+
+
+#直方圖-尺寸練習題-作法2
+S=read.csv(file.choose()) # 尺寸
+hist(S$尺寸, main="尺寸", xlab = "尺寸", ylab="次數",
+     col = "orange",border = "blue", breaks = 5)
+
+# 常態檢定
+shapiro.test(S$尺寸) # 若p值>0.05，則代表常態分配
+
+
+
+
 
 
 #箱形圖-產出量作法1
@@ -247,6 +202,7 @@ plot(x=airquality$Month,            # X軸的值
      xlab="Month(1~12)",            # X軸名稱
      ylab="Temperature(degrees F)") # Y軸名稱
 
+#散佈圖
 plot(x=airquality$Ozone,      # X軸的值
      y=airquality$Wind,       # Y軸的值
      main="Ozone to Wind",    # 圖片名稱
@@ -262,7 +218,8 @@ plot(x=airquality$Ozone,
      xlab="Ozone(ppb)",
      ylab="Wind(mph)",
      pch=16                  # 點的圖形
-) 
+)
+
 # 現在我們要在這張圖片中，把5月的資料點用藍色標註上去
 May_data <- airquality[airquality$Month==5, ]   # 找出5月的資料
 # 標上藍色的點
@@ -290,20 +247,6 @@ abline(lm.model, lwd=2)     # lwd代表線的粗細
 
 
 
-
-
-
-
-
-
-
-
-#分月份機率密度圖
-densityplot( ~ Ozone| Month ,      
-             data=airquality)    
-#全部機率密度圖
-densityplot( ~ Ozone ,      
-             data=airquality)
 
 
 #目的:我們想要在散布圖中，畫出線性回歸的趨勢線 #
