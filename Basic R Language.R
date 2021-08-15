@@ -8,6 +8,7 @@ abs(-94)
 # 安裝及匯入套件
 install.packages("installr")
 require(installr)
+library(installr)
 install.packages("lattice")
 require(lattice)
 install.packages("pastecs") 
@@ -106,14 +107,15 @@ pie(Tires$Counts,labels = label, col= c("skyblue","lightgreen","red","blue","lig
 
 
 #長條圖-Tires
-barplot(Tires$Counts, names.arg=Tires$CausesA, main="Tires", ylim = c(0,500), col=rainbow(7), cex.names=0.55)
-
+barplot(Tires$Counts, names.arg=Tires$CausesA, main="Tires", ylim = c(0,500), col=rainbow(7))
 
 
 
 #直方圖1-重量
-W=read.csv(file.choose())  # 重量.csv
-hist(W$重量, main="重量", xlab = "重量", ylab="高度")
+HW=read.csv(file.choose()) #身高體重
+hist(HW$體重, main="體重", xlab = "體重", ylab="次數")
+hist(HW$身高, main="身高", xlab = "身高", ylab="次數")
+
 
 # 常態/偏態檢定
 shapiro.test(W$重量)
@@ -143,8 +145,8 @@ boxplot(HW, main="身高體重", border="black", col=c("orange","green"))
 
 #折線圖-Storage
 Storage = read.csv(file.choose())
-plot(Storage[,2],xlab="Month",ylab="Storage", main="盤點記錄產品的庫存數量",lwd=4) # lwd為寬度
-plot(Storage[,2],xlab="Month",ylab="Storage", main="盤點記錄產品的庫存數量",lwd=4, type = "l") # lwd為寬度
+plot(Storage[,2],xlab="Month",ylab="Storage", main="數量",lwd=4) # lwd為寬度
+plot(Storage[,2],xlab="Month",ylab="Storage", main="數量",lwd=4, type = "l")
 
 
 
@@ -231,7 +233,6 @@ summary(L_lm_beta)
 
 
 
-
 # 複回歸
 L_lm<-lm(Sales~Temperature+Rainfall+Flyers+Price, data=L)
 L_lm
@@ -244,6 +245,7 @@ summary(L_lm_beta)
 new <- data.frame(Temperature=27.0, Rainfall=2.0, Flyers=15.0, Price=0.3)
 new
 predict(L_lm,new)
+
 
 
 
@@ -271,6 +273,8 @@ plot(h_M_cluster, xlab="曼哈頓距離")
 
 
 
+
+
 # K-means Clustering
 # 由於分群屬於「非監督式學習」的演算法，因此我們先把iris內的Species欄位拿掉，以剩下的資料進行分群：
 iris_data = read.csv(file.choose()) # iris
@@ -284,7 +288,7 @@ kmeans.cluster <- kmeans(iris_data_without_species,centers=3)
 # 群內的變異數
 kmeans.cluster$withinss
 
-# 分群結果和實際結果比較
+# 分群結果和實際結果比較(其實沒有意義)
 table(kmeans.cluster$cluster, iris_data$species)
 
 
@@ -295,5 +299,3 @@ fviz_cluster(kmeans.cluster,   # 分群結果
              data = iris_data_without_species,   # 資料
              geom = c("point","text"), # 點和標籤(point & label)
              frame.type = "norm")      # 框架型態
-
-
