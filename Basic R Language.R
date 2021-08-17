@@ -12,7 +12,7 @@ library(installr)
 install.packages("lattice")
 require(lattice)
 install.packages("pastecs") 
-require(pastecs) 
+require(pastecs)
 
 
 #更新R語言(需考量版本問題)
@@ -37,14 +37,14 @@ is.na(data1)
 
 
 # 移除有遺漏值資料的列
-
+data1
 na.omit(data1)
 
 
 # 用平均數填補遺漏值
 data1
-data1[is.na(data1[,"y1"]), "y1"] <- mean(data1[,"y1"], na.rm=T)
-data1[is.na(data1[,"x1"]), "x1"] <- mean(data1[,"x1"], na.rm=T)
+data1[is.na(data1$y1), "y1"] <- mean(data1$y1, na.rm=T)
+data1[is.na(data1$x1), "x1"] <- mean(data1$x1, na.rm=T)
 data1
 
 
@@ -79,6 +79,7 @@ Mode<-function(x) # 建立眾數的function
   tab<-tabulate(match(x,ux))
   ux[tab==max(tab)]
 }
+
 Mode(h)
 
 
