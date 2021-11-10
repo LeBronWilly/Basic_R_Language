@@ -252,10 +252,13 @@ predict(L_lm,new)
 
 
 # Hierarchical Clustering
-#我們考慮了25個歐洲國家（n = 25個單位）及其來自9個主要食物來源的蛋白質攝入量（百分比）（p = 9）。數據如下所示。
+#25個歐洲國家（n = 25個單位）及其來自9個主要食物來源的蛋白質攝入量（百分比）（p = 9）。數據如下所示。
 url = 'http://www.biz.uiowa.edu/faculty/jledolter/DataMining/protein.csv'
 food <- read.csv(url)
 food
+
+food=read.csv(file.choose()) # protein.csv
+
 
 #在階層式分群中，主要是以資料之間的「距離」遠近，來決定兩筆資料是否接近。
 #R的話，我們可以使用dist()，來建立資料之間的「距離矩陣」(Distance Matrix)，判斷資料之間的遠與近：
